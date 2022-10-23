@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,16 +32,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -49,6 +40,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  List<String> _startLocation = ['A', 'B', 'C', 'D']; // Option 2
+  List<String> _endLocation = ['A', 'B', 'C', 'D']; // Option 2
+  List<String> _person = ['A', 'B', 'C', 'D']; // Option 2
+  List<String> _recording = ['A', 'B', 'C', 'D']; // Option 2
+  List<String> _activation = ['A', 'B', 'C', 'D']; // Option 2
+  String? _selectedStartLocation; // Option 2
+  String? _selectedEndLocation;
+  String? _selectPerson;
+  String? _selectRecording;
+  String? _selectedActivation;
 
   void _incrementCounter() {
     setState(() {
@@ -63,53 +64,172 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
             const Text(
-              'You have pushed the button this many times:',
+              'Create New Journey',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: const [
+                Icon(
+                  Icons.directions_walk,
+                  color: Colors.black,
+                  size: 24.0,
+                ),
+                Icon(
+                  Icons.directions_bike_outlined,
+                  color: Colors.black,
+                  size: 24.0,
+                ),
+                Icon(Icons.directions_car)
+              ],
             ),
+
+            Column(
+              children: [
+                Center(
+                  child: DropdownButton(
+                    hint: Text(
+                        'Please choose a location'), // Not necessary for Option 1
+                    value: _selectedStartLocation,
+                    onChanged: (newValue) {
+                      setState(() {
+                        _selectedStartLocation = newValue;
+                      });
+                    },
+                    items: _startLocation.map((location) {
+                      return DropdownMenuItem(
+                        child: new Text(location),
+                        value: location,
+                      );
+                    }).toList(),
+                  ),
+                ),
+
+                // second drop down
+                Center(
+                  child: DropdownButton(
+                    hint: Text(
+                        'Please choose a location'), // Not necessary for Option 1
+                    value: _selectedEndLocation,
+                    onChanged: (newValue) {
+                      setState(() {
+                        _selectedEndLocation = newValue;
+                      });
+                    },
+                    items: _endLocation.map((location) {
+                      return DropdownMenuItem(
+                        child: new Text(location),
+                        value: location,
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+
+            // first drop down
+
+            Column(
+              children: [
+                const Text(
+                  'Select A Recording',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: DropdownButton(
+                        hint: Text(
+                            'Please choose a person'), // Not necessary for Option 1
+                        value: _selectPerson,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _selectPerson = newValue;
+                          });
+                        },
+                        items: _person.map((location) {
+                          return DropdownMenuItem(
+                            child: new Text(location),
+                            value: location,
+                          );
+                        }).toList(),
+                        // buttonWidth: 0.4 * MediaQuery.of(context).size.width,
+                      ),
+                    ),
+                    Container(
+                      child: DropdownButton(
+                        hint: Text(
+                            'Please choose a recording'), // Not necessary for Option 1
+                        value: _selectRecording,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _selectRecording = newValue;
+                          });
+                        },
+                        items: _recording.map((location) {
+                          return DropdownMenuItem(
+                            child: new Text(location),
+                            value: location,
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
+            Column(
+              children: [
+                const Text(
+                  'Select Activation',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: DropdownButton(
+                        hint: Text(
+                            'Please choose activation'), // Not necessary for Option 1
+                        value: _selectedActivation,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _selectedActivation = newValue;
+                          });
+                        },
+                        items: _activation.map((location) {
+                          return DropdownMenuItem(
+                            child: new Text(location),
+                            value: location,
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            TextButton(onPressed: () {  },
+            child: Text("Start Journey"),)
           ],
         ),
+
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _incrementCounter,
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 }
